@@ -1,68 +1,86 @@
 import {
-  Layout,
-  Grid,
+  // Grid,
+  ConfigProvider,
+  Typography,
+  Row,
+  Col,
+  Button,
+  Input,
 } from "antd";
+import {
+  UserOutlined,
+  ShoppingCartOutlined,
+  HeartOutlined,
+} from "@ant-design/icons";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import LoginModal from "./Loginform";
 
-const { Header } = Layout;
-
-const { useBreakpoint } = Grid;
+// const { useBreakpoint } = Grid;
 
 const TopNavigation = () => {
-  // const navigate = useNavigate();
-  const { sm } = useBreakpoint();
-  // const logoutHandler = () => {
-  //   localStorage.removeItem("accessToken");
-  //   localStorage.removeItem("refreshToken");
-  //   localStorage.removeItem("deviceToken");
-  //   navigate("/");
-  // };
+  // const { sm } = useBreakpoint();
+  const [open, setOpen] = useState(false);
 
   return (
-    <Header
-      style={{
-        padding: `${sm ? "0 2rem" : "0 1rem"}`,
-        position: "sticky",
-        top: 0,
-        backgroundColor: "#1a5173",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-        // height: "8vh",
-        display: "flex",
-        zIndex: "10",
+    <ConfigProvider
+      theme={{
+        token: {
+          // colorBgHeader: "#fff"
+          colorPrimary: "#6845",
+        },
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "left",
-          alignItems: "center",
-          marginRight: "1rem",
-          // width: "50%",
-        }}
+      <LoginModal open={open} setOpen={setOpen} />
+      <Row
+        className="sticky top-0 z-10"
+        style={{ padding: "1rem 2rem" }}
+        justify="center"
       >
-        <Link to="/home">
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexWrap: "wrap",
-              cursor: "pointer",
-            }}
+        <Col span={12}>
+          <Row gutter={12}>
+            <Col span={8} className="flex justify-center !items-center">
+              <Link to="/">
+                <img src="https://uploads-ssl.webflow.com/63e857eaeaf853471d5335ff/63e86ab4c21faa7bc0bd90dd_Logo.svg" />
+              </Link>
+            </Col>
+            <Col span={12} style={{ display: "flex", alignItems: "center" }}>
+              {/* Searchbar */}
+              <Input.Search placeholder="Basic usage" />
+            </Col>
+          </Row>
+        </Col>
+        <Col
+          span={12}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "end",
+          }}
+        >
+          <Button
+            onClick={() => setOpen(true)}
+            size="large"
+            style={{ marginRight: "1rem" }}
           >
-            <img
-              src="/logo.svg"
-              alt="logoimg"
-              height={"50px"}
-              width={"100px"}
-            />
-          </div>
-        </Link>
-      </div>
-      <div>
-        
-      </div>
-    </Header>
+            <Typography.Text>Login</Typography.Text>
+          </Button>
+          <Button size="large" type="primary">
+            {" "}
+            Signup
+          </Button>
+          <Button size="large" type="link" icon={<UserOutlined />}>
+            Account
+          </Button>
+          <Button size="large" type="link" icon={<ShoppingCartOutlined />}>
+            Cart
+          </Button>
+          <Button size="large" type="link" icon={<HeartOutlined />}>
+            Wishlist
+          </Button>
+        </Col>
+      </Row>
+    </ConfigProvider>
   );
 };
 

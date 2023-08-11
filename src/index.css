@@ -4,6 +4,7 @@ html {
   padding: 0px;
   margin: 0px;
   background-color: #f2f8fb;
+  min-height: 100vh;
 }
 
 * {
