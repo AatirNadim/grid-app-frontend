@@ -1,7 +1,13 @@
 import MainCarousel from "./Carousel";
+import ProductRows from "./ProductRows";
 
 const Homepage = () => {
-  return <MainCarousel />;
+  return (
+    <>
+      <MainCarousel />
+      <ProductRows />
+    </>
+  );
 };
 
 export default Homepage;
