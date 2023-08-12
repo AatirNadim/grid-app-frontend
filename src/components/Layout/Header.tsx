@@ -32,6 +32,7 @@ const TopNavigation = () => {
         token: {
           // colorBgHeader: "#fff"
           colorPrimary: "#A459D1",
+          colorPrimaryHover : '#7b439e',
           borderRadius: 4,
           colorLink: "#213555",
           colorLinkHover: "#B799FF",
@@ -41,7 +42,7 @@ const TopNavigation = () => {
       <LoginModal open={loginOpen} setOpen={setLoginOpen} />
       <SignupModal open={signupOpen} setOpen={setSignupOpen} />
       <Row
-        className="sticky top-0 z-10"
+        className="sticky top-0 z-10 bg-white shadow-md"
         style={{ padding: "1rem 2rem" }}
         justify="center"
       >
@@ -71,8 +72,11 @@ const TopNavigation = () => {
               onClick={() => setLoginOpen(true)}
               size="large"
               style={{ marginRight: "1rem" }}
+              className="mr-4 font-semibold border-2 text-gray-700"
             >
-              <Typography.Text>Login</Typography.Text>
+              {/* <Typography.Text className="h-[fit-content]" > */}
+                Login
+              {/* </Typography.Text> */}
             </Button>
           )}
           {!isLoggedIn && (
@@ -80,6 +84,7 @@ const TopNavigation = () => {
               onClick={() => setSignupOpen(true)}
               size="large"
               type="primary"
+              className="bg-[#A459D1] font-semibold"
             >
               {" "}
               Signup
@@ -88,6 +93,7 @@ const TopNavigation = () => {
           {isLoggedIn && (
             <Button
               style={{ marginRight: "1rem" }}
+              className=""
               size="large"
               type="link"
               icon={<ShoppingCartOutlined />}

@@ -10,7 +10,7 @@ export const UserSignup = async (payload) => {
     return response.data;
   } catch (error) {
     // eslint-disable-next-line no-throw-literal
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
@@ -23,7 +23,7 @@ export const UserLogin = async (payload) => {
     return response.data;
   } catch (error) {
     // eslint-disable-next-line no-throw-literal
-    console.log(error);
+    console.error(error);
     throw error;
   }
 };
