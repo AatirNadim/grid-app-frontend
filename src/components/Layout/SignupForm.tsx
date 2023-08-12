@@ -52,12 +52,24 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
         initialValues={{ modifier: "public" }}
       >
         <Form.Item
-          name="name"
-          label="Name"
+          name="first_name"
+          label="First Name"
           rules={[
             {
               required: true,
-              message: "Please Enter your name!",
+              message: "Please Enter your first name!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="last_name"
+          label="Last Name"
+          rules={[
+            {
+              required: true,
+              message: "Please Enter your last name!",
             },
           ]}
         >
