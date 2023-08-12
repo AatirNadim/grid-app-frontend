@@ -2,11 +2,12 @@
 import React from "react";
 import { Form, Input, Modal } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import useHttp from "../../hooks/useHttp";
+import { UserLogin } from "../../lib/api";
 
 interface Values {
-  title: string;
-  description: string;
-  modifier: string;
+  email: string;
+  password: string;
 }
 
 interface LoginProps {
@@ -15,12 +16,14 @@ interface LoginProps {
 }
 
 interface CollectionCreateFormProps {
+  isLoading: boolean;
   open: boolean;
   onCreate: (values: Values) => void;
   onCancel: () => void;
 }
 
 const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
+  isLoading,
   open,
   onCreate,
   onCancel,
@@ -33,6 +36,7 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
       okText="Login"
       cancelText="Cancel"
       onCancel={onCancel}
+      confirmLoading={isLoading}
       onOk={() => {
         form
           .validateFields()
@@ -90,14 +94,31 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
 };
 
 const LoginModal: React.FC<LoginProps> = ({ open, setOpen }) => {
-  const onCreate = (values: any) => {
+  const { sendRequest, isLoading } = useHttp(UserLogin);
+  const onCreate = (values) => {
     console.log("Received values of form: ", values);
-    setOpen(false);
+    const payload = {
+      email: values.email,
+      password: values.password,
+      username: values.email,
+    };
+    sendRequest(
+      (res) => {
+        console.log(res);
+        setOpen(false);
+      },
+      (err) => {
+        console.log(err);
+        setOpen(false);
+      },
+      payload
+    );
   };
 
   return (
     <div>
       <CollectionCreateForm
+        isLoading={isLoading}
         open={open}
         onCreate={onCreate}
         onCancel={() => {

@@ -24,7 +24,7 @@ const TopNavigation = () => {
   // const { sm } = useBreakpoint();
   const [loginOpen, setLoginOpen] = useState(false);
   const [signupOpen, setSignupOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <ConfigProvider
