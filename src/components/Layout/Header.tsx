@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   // Grid,
   ConfigProvider,
@@ -15,23 +16,30 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import LoginModal from "./Loginform";
+import SignupModal from "./SignupForm";
 
 // const { useBreakpoint } = Grid;
 
 const TopNavigation = () => {
   // const { sm } = useBreakpoint();
-  const [open, setOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [signupOpen, setSignupOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   return (
     <ConfigProvider
       theme={{
         token: {
           // colorBgHeader: "#fff"
-          colorPrimary: "#6845",
+          colorPrimary: "#A459D1",
+          borderRadius: 4,
+          colorLink: "#213555",
+          colorLinkHover: "#B799FF",
         },
       }}
     >
-      <LoginModal open={open} setOpen={setOpen} />
+      <LoginModal open={loginOpen} setOpen={setLoginOpen} />
+      <SignupModal open={signupOpen} setOpen={setSignupOpen} />
       <Row
         className="sticky top-0 z-10"
         style={{ padding: "1rem 2rem" }}
@@ -58,26 +66,50 @@ const TopNavigation = () => {
             justifyContent: "end",
           }}
         >
-          <Button
-            onClick={() => setOpen(true)}
-            size="large"
-            style={{ marginRight: "1rem" }}
-          >
-            <Typography.Text>Login</Typography.Text>
-          </Button>
-          <Button size="large" type="primary">
-            {" "}
-            Signup
-          </Button>
-          <Button size="large" type="link" icon={<UserOutlined />}>
-            Account
-          </Button>
-          <Button size="large" type="link" icon={<ShoppingCartOutlined />}>
-            Cart
-          </Button>
-          <Button size="large" type="link" icon={<HeartOutlined />}>
-            Wishlist
-          </Button>
+          {!isLoggedIn && (
+            <Button
+              onClick={() => setLoginOpen(true)}
+              size="large"
+              style={{ marginRight: "1rem" }}
+            >
+              <Typography.Text>Login</Typography.Text>
+            </Button>
+          )}
+          {!isLoggedIn && (
+            <Button
+              onClick={() => setSignupOpen(true)}
+              size="large"
+              type="primary"
+            >
+              {" "}
+              Signup
+            </Button>
+          )}
+          {isLoggedIn && (
+            <Button
+              style={{ marginRight: "1rem" }}
+              size="large"
+              type="link"
+              icon={<ShoppingCartOutlined />}
+            >
+              Cart
+            </Button>
+          )}
+          {isLoggedIn && (
+            <Button
+              style={{ marginRight: "1rem" }}
+              size="large"
+              type="link"
+              icon={<HeartOutlined />}
+            >
+              Wishlist
+            </Button>
+          )}
+          {isLoggedIn && (
+            <Button size="large" type="link" icon={<UserOutlined />}>
+              Account
+            </Button>
+          )}
         </Col>
       </Row>
     </ConfigProvider>

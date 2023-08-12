@@ -9,7 +9,7 @@ interface Values {
   modifier: string;
 }
 
-interface LoginProps {
+interface SignupProps {
   open: boolean;
   setOpen: any;
 }
@@ -29,8 +29,8 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
   return (
     <Modal
       open={open}
-      title="Login To Your Account."
-      okText="Login"
+      title="Create Your Account."
+      okText="Signup"
       cancelText="Cancel"
       onCancel={onCancel}
       onOk={() => {
@@ -48,9 +48,21 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
       <Form
         form={form}
         layout="vertical"
-        name="login_form_in_modal"
+        name="signup_form_in_modal"
         initialValues={{ modifier: "public" }}
       >
+        <Form.Item
+          name="name"
+          label="Name"
+          rules={[
+            {
+              required: true,
+              message: "Please Enter your name!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
         <Form.Item
           name="email"
           label="Email"
@@ -89,7 +101,7 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
   );
 };
 
-const LoginModal: React.FC<LoginProps> = ({ open, setOpen }) => {
+const SignupModal: React.FC<SignupProps> = ({ open, setOpen }) => {
   const onCreate = (values: any) => {
     console.log("Received values of form: ", values);
     setOpen(false);
@@ -108,4 +120,4 @@ const LoginModal: React.FC<LoginProps> = ({ open, setOpen }) => {
   );
 };
 
-export default LoginModal;
+export default SignupModal;
