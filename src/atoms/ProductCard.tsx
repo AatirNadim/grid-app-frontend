@@ -2,9 +2,6 @@ import React from "react";
 import { Card, ConfigProvider, Typography, message } from "antd";
 import { Link } from "react-router-dom";
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
-import { productState } from "./productState";
-import { useRecoilState } from "recoil";
-import { useNavigate } from "react-router-dom";
 
 const { Meta } = Card;
 interface CardProps {
@@ -14,9 +11,7 @@ interface CardProps {
   name: string;
   price: number;
 }
-const ProductCard: React.FC<CardProps> = ({ to, image, id, name, price }) => {
-  const navigate = useNavigate();
-  const [productVal, setProductVal] = useRecoilState(productState);
+const ProductCard: React.FC<CardProps> = ({ to, image, name, price }) => {
   return (
     <ConfigProvider
       theme={{
@@ -53,22 +48,7 @@ const ProductCard: React.FC<CardProps> = ({ to, image, id, name, price }) => {
         style={{}}
       >
         <Meta
-          // title={<Link to={to}>{name}</Link>}
-          title = {
-            <span onClick={() => {
-              // setProductVal({
-              //   id: id,
-              //   link: to,
-              //   image: image,
-              //   name: name,
-              //   price: price,
-              // });
-              // navigate(`/product?id=${id}`)
-              navigate(`/product/${id}`)
-            }} 
-              className="hover:text-blue-600 transition "
-            >{name}</span>
-          }
+          title={<Link to={to}>{name}</Link>}
           description={
             <Typography.Title level={5}>Rs. {price}</Typography.Title>
           }

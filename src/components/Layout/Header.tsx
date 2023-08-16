@@ -32,7 +32,7 @@ const TopNavigation = () => {
         token: {
           // colorBgHeader: "#fff"
           colorPrimary: "#A459D1",
-          colorPrimaryHover : '#7b439e',
+          colorPrimaryHover: "#7b439e",
           borderRadius: 4,
           colorLink: "#213555",
           colorLinkHover: "#B799FF",
@@ -75,7 +75,7 @@ const TopNavigation = () => {
               className="mr-4 font-semibold border-2 text-gray-700"
             >
               {/* <Typography.Text className="h-[fit-content]" > */}
-                Login
+              Login
               {/* </Typography.Text> */}
             </Button>
           )}
@@ -84,7 +84,7 @@ const TopNavigation = () => {
               onClick={() => setSignupOpen(true)}
               size="large"
               type="primary"
-              className="bg-[#A459D1] font-semibold"
+              className=" font-semibold"
             >
               {" "}
               Signup
