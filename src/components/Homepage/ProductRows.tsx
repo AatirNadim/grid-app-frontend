@@ -4,23 +4,61 @@ import { Col, Row, Typography } from "antd";
 import { useEffect, useState } from "react";
 import ProductCard from "../../atoms/ProductCard";
 import useHttp from "../../hooks/useHttp";
-import { getALLProductsWithoutLogin } from "../../lib/api";
+import {
+  GetWishlistedProducts,
+  getALLProductsWithoutLogin,
+} from "../../lib/api";
+import { useRecoilValue } from "recoil";
+import { authState } from "../../atoms/authState";
 const ProductRows = () => {
-  const { sendRequest } = useHttp(getALLProductsWithoutLogin);
+  const { sendRequest: getProducts } = useHttp(getALLProductsWithoutLogin);
+  const { sendRequest: getWishlistedProducts } = useHttp(GetWishlistedProducts);
+  const auth = useRecoilValue(authState);
   const [normalProducts, setNormalProducts] = useState([]);
 
   useEffect(() => {
-    sendRequest(
+    console.log(auth);
+    getWishlistedProducts(
       (res) => {
         console.log(res);
-        setNormalProducts((prev) => {
-          return res;
-        });
+        getProducts(
+          (products) => {
+            console.log(products);
+            setNormalProducts((prev) => {
+              return products?.map((item) => {
+                return {
+                  ...item,
+                  isWishList:
+                    res?.filter((p) => +p?.product[0]?.id === +item.id).length >
+                    0
+                      ? true
+                      : false,
+                };
+              });
+            });
+          },
+          (err) => console.log(err),
+          {}
+        );
       },
-      (err) => console.log(err),
-      {}
+      () => {},
+      { accessToken: auth?.accessToken }
     );
-  }, []);
+    if (!auth.isLoggedIn) {
+      getProducts(
+        (res) => {
+          console.log(res);
+          setNormalProducts((prev) => {
+            return res;
+          });
+        },
+        (err) => console.log(err),
+        {}
+      );
+    }
+  }, [auth.isLoggedIn]);
+
+  console.log(normalProducts);
 
   return (
     <>
@@ -34,9 +72,11 @@ const ProductRows = () => {
               return (
                 <Col key={idx} xl={6} md={8} sm={12} xs={24}>
                   <ProductCard
+                    wishList={item?.isWishList}
                     image={item.image}
                     id={item.id}
                     name={item.name}
+                    productInventoryId={item?.inventory[0]?.id}
                     price={+item?.inventory[0]?.price}
                   />
                 </Col>

@@ -16,7 +16,7 @@ const LayoutWrapper = ({ children }) => {
         return {
           isLoggedIn: true,
           accessToken: localStorage.getItem("accessToken"),
-          refreshToken: localStorage.getItem("refreshTokenss")
+          refreshToken: localStorage.getItem("refreshToken")
         }
       })
     }

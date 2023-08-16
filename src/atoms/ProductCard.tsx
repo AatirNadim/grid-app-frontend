@@ -18,13 +18,26 @@ interface CardProps {
   id: number;
   name: string;
   price: number;
+  wishList: boolean;
+  productInventoryId: number;
 }
-const ProductCard: React.FC<CardProps> = ({ id, image, name, price }) => {
+const ProductCard: React.FC<CardProps> = ({
+  id,
+  image,
+  name,
+  price,
+  wishList,
+  productInventoryId,
+}) => {
   const { sendRequest } = useHttp(AddToWishList);
   const { sendRequest: AddCart } = useHttp(AddToCart);
-  const [isWishList, setIsWishlist] = React.useState(false);
+  const [isWishList, setIsWishlist] = React.useState(wishList);
   const [isCart, setIsCart] = React.useState(false);
   const auth = useRecoilValue(authState);
+
+  React.useEffect(() => {
+    setIsWishlist(wishList);
+  }, [wishList]);
   return (
     <ConfigProvider
       theme={{
@@ -50,7 +63,7 @@ const ProductCard: React.FC<CardProps> = ({ id, image, name, price }) => {
                     },
                     (err) => console.log(err),
                     {
-                      payload: { product_inventory_id: id },
+                      payload: { product_inventory_id: productInventoryId },
                       accessToken: auth?.accessToken,
                     }
                   );
@@ -75,7 +88,10 @@ const ProductCard: React.FC<CardProps> = ({ id, image, name, price }) => {
                     },
                     (err) => console.log(err),
                     {
-                      payload: { product_inventory_id: id, quantity: 1 },
+                      payload: {
+                        product_inventory_id: productInventoryId,
+                        quantity: 1,
+                      },
                       accessToken: auth?.accessToken,
                     }
                   );

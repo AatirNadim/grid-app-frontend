@@ -72,3 +72,33 @@ export const AddToCart = async (payload) => {
     throw error;
   }
 };
+
+export const GetWishlistedProducts = async (payload) => {
+  console.log(payload);
+  try {
+    const response = await axios.get(`${BASE_URL}/api/product/getWishlist/`, {
+      headers: { Authorization: "Bearer " + payload.accessToken },
+    });
+    return response.data;
+  } catch (error) {
+    // eslint-disable-next-line no-throw-literal
+    console.error(error);
+    throw error;
+  }
+};
+
+export const GetProductById = async (payload) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/api/product/get/${payload?.id}`,
+      {
+        headers: { Authorization: "Bearer " + payload.accessToken },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    // eslint-disable-next-line no-throw-literal
+    console.error(error);
+    throw error;
+  }
+};
