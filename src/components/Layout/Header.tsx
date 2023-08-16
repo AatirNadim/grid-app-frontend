@@ -43,8 +43,14 @@ const TopNavigation = () => {
       <LoginModal open={loginOpen} setOpen={setLoginOpen} />
       <SignupModal open={signupOpen} setOpen={setSignupOpen} />
       <Row
-        className="sticky top-0 z-10 bg-white shadow-md"
-        style={{ padding: "1rem 2rem" }}
+        // className="sticky top-0 z-10 bg-white shadow-md"
+        style={{
+          padding: "1rem 2rem",
+          position: "sticky",
+          top: 0,
+          zIndex: 10,
+          backgroundColor: "#fff",
+        }}
         justify="center"
       >
         <Col span={12}>

@@ -2,16 +2,21 @@ import React from "react";
 import { Card, ConfigProvider, Typography, message } from "antd";
 import { Link } from "react-router-dom";
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import useHttp from "../hooks/useHttp";
+import { AddToWishList } from "../lib/api";
+import { useRecoilValue } from "recoil";
+import { authState } from "./authState";
 
 const { Meta } = Card;
 interface CardProps {
-  to: string;
   image: string;
   id: number;
   name: string;
   price: number;
 }
-const ProductCard: React.FC<CardProps> = ({ to, image, name, price }) => {
+const ProductCard: React.FC<CardProps> = ({ id, image, name, price }) => {
+  const { sendRequest } = useHttp(AddToWishList);
+  const auth = useRecoilValue(authState);
   return (
     <ConfigProvider
       theme={{
@@ -24,7 +29,20 @@ const ProductCard: React.FC<CardProps> = ({ to, image, name, price }) => {
       <Card
         actions={[
           <HeartOutlined
-            onClick={() => message.success("Wishlist")}
+            onClick={() => {
+              if (!auth.isLoggedIn) {
+                message.error("User is not logged in!");
+                return;
+              } else {
+                sendRequest(
+                  () => {
+                    message.success("Added to wishlist!");
+                  },
+                  (err) => console.log(err),
+                  { payload: {product_inventory_id: id}, accessToken: auth?.accessToken }
+                );
+              }
+            }}
             key="setting"
           />,
           <ShoppingCartOutlined
@@ -48,9 +66,9 @@ const ProductCard: React.FC<CardProps> = ({ to, image, name, price }) => {
         style={{}}
       >
         <Meta
-          title={<Link to={to}>{name}</Link>}
+          title={<Link to={`/product/${id}`}>{name}</Link>}
           description={
-            <Typography.Title level={5}>Rs. {price}</Typography.Title>
+            <Typography.Title level={5}>Rs. {price || 1000}</Typography.Title>
           }
         />
       </Card>
