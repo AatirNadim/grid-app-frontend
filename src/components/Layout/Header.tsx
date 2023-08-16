@@ -2,7 +2,6 @@
 import {
   // Grid,
   ConfigProvider,
-  Typography,
   Row,
   Col,
   Button,
@@ -17,6 +16,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import LoginModal from "./Loginform";
 import SignupModal from "./SignupForm";
+import { useRecoilValue } from "recoil";
+import { authState } from "../../atoms/authState";
 
 // const { useBreakpoint } = Grid;
 
@@ -24,7 +25,7 @@ const TopNavigation = () => {
   // const { sm } = useBreakpoint();
   const [loginOpen, setLoginOpen] = useState(false);
   const [signupOpen, setSignupOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const auth = useRecoilValue(authState);
 
   return (
     <ConfigProvider
@@ -67,7 +68,7 @@ const TopNavigation = () => {
             justifyContent: "end",
           }}
         >
-          {!isLoggedIn && (
+          {!auth?.isLoggedIn && (
             <Button
               onClick={() => setLoginOpen(true)}
               size="large"
@@ -79,7 +80,7 @@ const TopNavigation = () => {
               {/* </Typography.Text> */}
             </Button>
           )}
-          {!isLoggedIn && (
+          {!auth?.isLoggedIn && (
             <Button
               onClick={() => setSignupOpen(true)}
               size="large"
@@ -90,7 +91,7 @@ const TopNavigation = () => {
               Signup
             </Button>
           )}
-          {isLoggedIn && (
+          {auth?.isLoggedIn && (
             <Button
               style={{ marginRight: "1rem" }}
               className=""
@@ -101,7 +102,7 @@ const TopNavigation = () => {
               Cart
             </Button>
           )}
-          {isLoggedIn && (
+          {auth?.isLoggedIn && (
             <Button
               style={{ marginRight: "1rem" }}
               size="large"
@@ -111,7 +112,7 @@ const TopNavigation = () => {
               Wishlist
             </Button>
           )}
-          {isLoggedIn && (
+          {auth?.isLoggedIn && (
             <Button size="large" type="link" icon={<UserOutlined />}>
               Account
             </Button>
