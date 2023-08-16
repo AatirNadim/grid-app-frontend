@@ -28,6 +28,7 @@ export const UserLogin = async (payload) => {
   }
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const getALLProductsWithoutLogin = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/api/product/get/`);
@@ -90,10 +91,10 @@ export const GetWishlistedProducts = async (payload) => {
 export const GetProductById = async (payload) => {
   try {
     const response = await axios.get(
-      `${BASE_URL}/api/product/get/${payload?.id}`,
-      {
-        headers: { Authorization: "Bearer " + payload.accessToken },
-      }
+      `${BASE_URL}/api/product/get/${payload?.id}/`
+      // {
+      //   headers: { Authorization: "Bearer " + payload.accessToken },
+      // }
     );
     return response.data;
   } catch (error) {

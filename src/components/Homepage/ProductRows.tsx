@@ -20,10 +20,8 @@ const ProductRows = () => {
     console.log(auth);
     getWishlistedProducts(
       (res) => {
-        console.log(res);
         getProducts(
           (products) => {
-            console.log(products);
             setNormalProducts((prev) => {
               return products?.map((item) => {
                 return {
@@ -47,7 +45,6 @@ const ProductRows = () => {
     if (!auth.isLoggedIn) {
       getProducts(
         (res) => {
-          console.log(res);
           setNormalProducts((prev) => {
             return res;
           });
