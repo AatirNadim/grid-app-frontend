@@ -1,9 +1,14 @@
 import React from "react";
 import { Card, ConfigProvider, Typography, message } from "antd";
 import { Link } from "react-router-dom";
-import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import {
+  HeartFilled,
+  HeartOutlined,
+  ShoppingCartOutlined,
+  ShoppingFilled,
+} from "@ant-design/icons";
 import useHttp from "../hooks/useHttp";
-import { AddToWishList } from "../lib/api";
+import { AddToCart, AddToWishList } from "../lib/api";
 import { useRecoilValue } from "recoil";
 import { authState } from "./authState";
 
@@ -16,6 +21,9 @@ interface CardProps {
 }
 const ProductCard: React.FC<CardProps> = ({ id, image, name, price }) => {
   const { sendRequest } = useHttp(AddToWishList);
+  const { sendRequest: AddCart } = useHttp(AddToCart);
+  const [isWishList, setIsWishlist] = React.useState(false);
+  const [isCart, setIsCart] = React.useState(false);
   const auth = useRecoilValue(authState);
   return (
     <ConfigProvider
@@ -28,27 +36,56 @@ const ProductCard: React.FC<CardProps> = ({ id, image, name, price }) => {
     >
       <Card
         actions={[
-          <HeartOutlined
-            onClick={() => {
-              if (!auth.isLoggedIn) {
-                message.error("User is not logged in!");
-                return;
-              } else {
-                sendRequest(
-                  () => {
-                    message.success("Added to wishlist!");
-                  },
-                  (err) => console.log(err),
-                  { payload: {product_inventory_id: id}, accessToken: auth?.accessToken }
-                );
-              }
-            }}
-            key="setting"
-          />,
-          <ShoppingCartOutlined
-            onClick={() => message.success("cart")}
-            key="edit"
-          />,
+          !isWishList ? (
+            <HeartOutlined
+              onClick={() => {
+                if (!auth.isLoggedIn) {
+                  message.error("User is not logged in!");
+                  return;
+                } else {
+                  sendRequest(
+                    () => {
+                      message.success("Added to wishlist!");
+                      setIsWishlist(true);
+                    },
+                    (err) => console.log(err),
+                    {
+                      payload: { product_inventory_id: id },
+                      accessToken: auth?.accessToken,
+                    }
+                  );
+                }
+              }}
+              key="setting"
+            />
+          ) : (
+            <HeartFilled />
+          ),
+          !isCart ? (
+            <ShoppingCartOutlined
+              onClick={() => {
+                if (!auth.isLoggedIn) {
+                  message.error("User is not logged in!");
+                  return;
+                } else {
+                  AddCart(
+                    () => {
+                      message.success("Added to Cart!");
+                      setIsCart(true);
+                    },
+                    (err) => console.log(err),
+                    {
+                      payload: { product_inventory_id: id, quantity: 1 },
+                      accessToken: auth?.accessToken,
+                    }
+                  );
+                }
+              }}
+              key="edit"
+            />
+          ) : (
+            <ShoppingFilled />
+          ),
         ]}
         hoverable
         cover={
