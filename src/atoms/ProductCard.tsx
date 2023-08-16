@@ -20,6 +20,7 @@ interface CardProps {
   price: number;
   wishList: boolean;
   productInventoryId: number;
+  cart: boolean;
 }
 const ProductCard: React.FC<CardProps> = ({
   id,
@@ -28,16 +29,18 @@ const ProductCard: React.FC<CardProps> = ({
   price,
   wishList,
   productInventoryId,
+  cart,
 }) => {
   const { sendRequest } = useHttp(AddToWishList);
   const { sendRequest: AddCart } = useHttp(AddToCart);
   const [isWishList, setIsWishlist] = React.useState(wishList);
-  const [isCart, setIsCart] = React.useState(false);
+  const [isCart, setIsCart] = React.useState(cart);
   const auth = useRecoilValue(authState);
 
   React.useEffect(() => {
     setIsWishlist(wishList);
-  }, [wishList]);
+    setIsCart(cart);
+  }, [wishList, cart]);
   return (
     <ConfigProvider
       theme={{

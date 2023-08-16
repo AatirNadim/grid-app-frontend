@@ -88,6 +88,20 @@ export const GetWishlistedProducts = async (payload) => {
   }
 };
 
+export const GetCartProducts = async (payload) => {
+  console.log(payload);
+  try {
+    const response = await axios.get(`${BASE_URL}/api/product/getCart/`, {
+      headers: { Authorization: "Bearer " + payload.accessToken },
+    });
+    return response.data;
+  } catch (error) {
+    // eslint-disable-next-line no-throw-literal
+    console.error(error);
+    throw error;
+  }
+};
+
 export const GetProductById = async (payload) => {
   try {
     const response = await axios.get(
