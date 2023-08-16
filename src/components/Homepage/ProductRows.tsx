@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Col, Row, Typography } from "antd";
+import { Col, Row, Typography, Grid } from "antd";
 import { useEffect, useState } from "react";
 import ProductCard from "../../atoms/ProductCard";
 import useHttp from "../../hooks/useHttp";
@@ -11,7 +11,9 @@ import {
 } from "../../lib/api";
 import { useRecoilValue } from "recoil";
 import { authState } from "../../atoms/authState";
+const { useBreakpoint } = Grid;
 const ProductRows = () => {
+  const { xl, md } = useBreakpoint();
   const { sendRequest: getProducts } = useHttp(getALLProductsWithoutLogin);
   const { sendRequest: getWishlistedProducts } = useHttp(GetWishlistedProducts);
   const { sendRequest: getCartProducts } = useHttp(GetCartProducts);
@@ -69,11 +71,10 @@ const ProductRows = () => {
     }
   }, [auth.isLoggedIn]);
 
-  console.log(normalProducts);
 
   return (
     <>
-      <Row style={{ padding: "6rem" }}>
+      <Row style={{ padding: xl ? "6rem" : md ? "4rem" : "4rem 2rem" }}>
         <Col span={24}>
           <Typography.Title level={1} style={{ marginBottom: "4rem" }}>
             Trending

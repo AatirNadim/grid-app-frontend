@@ -47,7 +47,7 @@ const Productpage: React.FC = () => {
       () => {},
       { accessToken: auth.accessToken, id: +id }
     );
-  }, []);
+  }, [id]);
   // back to products to set the product detail to null
   return (
     // <div>jkasjas</div>

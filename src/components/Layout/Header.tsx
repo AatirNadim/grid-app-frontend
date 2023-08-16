@@ -1,12 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  // Grid,
-  ConfigProvider,
-  Row,
-  Col,
-  Button,
-  Input,
-} from "antd";
+import { Grid, ConfigProvider, Row, Col, Button, Input } from "antd";
 import {
   UserOutlined,
   ShoppingCartOutlined,
@@ -18,13 +11,15 @@ import LoginModal from "./Loginform";
 import SignupModal from "./SignupForm";
 import { useRecoilValue } from "recoil";
 import { authState } from "../../atoms/authState";
+import WishlistModal from "./WishlistModal";
 
-// const { useBreakpoint } = Grid;
+const { useBreakpoint } = Grid;
 
 const TopNavigation = () => {
-  // const { sm } = useBreakpoint();
+  const { lg } = useBreakpoint();
   const [loginOpen, setLoginOpen] = useState(false);
   const [signupOpen, setSignupOpen] = useState(false);
+  const [wishlistOpen, setWishlistOpen] = useState(false);
   const auth = useRecoilValue(authState);
 
   return (
@@ -42,6 +37,7 @@ const TopNavigation = () => {
     >
       <LoginModal open={loginOpen} setOpen={setLoginOpen} />
       <SignupModal open={signupOpen} setOpen={setSignupOpen} />
+      <WishlistModal open={wishlistOpen} setOpen={setWishlistOpen} />
       <Row
         // className="sticky top-0 z-10 bg-white shadow-md"
         style={{
@@ -53,28 +49,34 @@ const TopNavigation = () => {
         }}
         justify="center"
       >
-        <Col span={12}>
+        <Col sm={24} lg={14}>
           <Row gutter={12}>
             <Col span={8} className="flex justify-center !items-center">
               <Link to="/">
                 <img src="https://uploads-ssl.webflow.com/63e857eaeaf853471d5335ff/63e86ab4c21faa7bc0bd90dd_Logo.svg" />
               </Link>
             </Col>
-            <Col span={12} style={{ display: "flex", alignItems: "center" }}>
+            <Col
+              span={16}
+              xl={12}
+              style={{ display: "flex", alignItems: "center" }}
+            >
               {/* Searchbar */}
               <Input.Search placeholder="Basic usage" />
             </Col>
           </Row>
         </Col>
         <Col
-          span={12}
+          lg={10}
+          span={0}
+          sm={0}
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "end",
           }}
         >
-          {!auth?.isLoggedIn && (
+          {!auth?.isLoggedIn && lg && (
             <Button
               onClick={() => setLoginOpen(true)}
               size="large"
@@ -86,7 +88,7 @@ const TopNavigation = () => {
               {/* </Typography.Text> */}
             </Button>
           )}
-          {!auth?.isLoggedIn && (
+          {!auth?.isLoggedIn && lg && (
             <Button
               onClick={() => setSignupOpen(true)}
               size="large"
@@ -97,7 +99,7 @@ const TopNavigation = () => {
               Signup
             </Button>
           )}
-          {auth?.isLoggedIn && (
+          {auth?.isLoggedIn && lg && (
             <Button
               style={{ marginRight: "1rem" }}
               className=""
@@ -108,17 +110,18 @@ const TopNavigation = () => {
               Cart
             </Button>
           )}
-          {auth?.isLoggedIn && (
+          {auth?.isLoggedIn && lg && (
             <Button
               style={{ marginRight: "1rem" }}
               size="large"
               type="link"
               icon={<HeartOutlined />}
+              onClick={() => setWishlistOpen(true)}
             >
               Wishlist
             </Button>
           )}
-          {auth?.isLoggedIn && (
+          {auth?.isLoggedIn && lg && (
             <Button size="large" type="link" icon={<UserOutlined />}>
               Account
             </Button>
