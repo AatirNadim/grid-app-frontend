@@ -21,37 +21,36 @@ const ProductRows = () => {
   const [normalProducts, setNormalProducts] = useState([]);
 
   useEffect(() => {
-    console.log(auth);
-    if (auth.isLoggedIn) {
+    if (auth?.isLoggedIn && auth?.accessToken !== "") {
       getWishlistedProducts(
         (wishlist) => {
-          // getCartProducts(
-          //   (cart) => {
-
-          //   },
-          //   () => {},
-          //   { accessToken: auth?.accessToken }
-          // );
-          getProducts(
-            (products) => {
-              setNormalProducts((prev) => {
-                return products?.map((item) => {
-                  return {
-                    ...item,
-                    isWishList:
-                      wishlist?.filter((p) => +p?.product[0]?.id === +item?.id)
-                        .length > 0
-                        ? true
-                        : false,
-                    // isCart:
-                    //   cart?.filter((p) => +p?.product[0]?.id === +item?.id)
-                    //     .length > 0,
-                  };
-                });
-              });
+          getCartProducts(
+            (cart) => {
+              getProducts(
+                (products) => {
+                  setNormalProducts((prev) => {
+                    return products?.map((item) => {
+                      return {
+                        ...item,
+                        isWishList:
+                          wishlist?.filter(
+                            (p) => +p?.product[0]?.id === +item?.id
+                          ).length > 0
+                            ? true
+                            : false,
+                        isCart:
+                          cart?.filter((p) => +p?.product[0]?.id === +item?.id)
+                            .length > 0,
+                      };
+                    });
+                  });
+                },
+                (err) => console.log(err),
+                {}
+              );
             },
-            (err) => console.log(err),
-            {}
+            () => {},
+            { accessToken: auth?.accessToken }
           );
         },
         () => {},
@@ -70,7 +69,6 @@ const ProductRows = () => {
       );
     }
   }, [auth.isLoggedIn]);
-
 
   return (
     <>

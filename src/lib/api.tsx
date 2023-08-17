@@ -117,3 +117,20 @@ export const GetProductById = async (payload) => {
     throw error;
   }
 };
+
+export const SendLocationHistory = async (payload) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/api/product/createHistory/`,
+      {
+        ...payload?.payload,
+      },
+      { headers: { Authorization: "Bearer " + payload.accessToken } }
+    );
+    return response.data;
+  } catch (error) {
+    // eslint-disable-next-line no-throw-literal
+    console.error(error);
+    throw error;
+  }
+};

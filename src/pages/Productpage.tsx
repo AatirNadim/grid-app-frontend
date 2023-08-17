@@ -11,7 +11,7 @@ import {
 import { useParams } from "react-router-dom";
 // import { products } from "../utils/products";
 import useHttp from "../hooks/useHttp";
-import { GetProductById } from "../lib/api";
+import { GetProductById, SendLocationHistory } from "../lib/api";
 import { authState } from "../atoms/authState";
 import { useRecoilValue } from "recoil";
 
@@ -32,12 +32,85 @@ import { useRecoilValue } from "recoil";
 //     "This is a beautiful dress, I truly recomment you to buy it so i can tear it off your body. Yeah, you know what I mean.",
 // };
 
+// function displayLocation(latitude, longitude) {
+//   const request = new XMLHttpRequest();
+
+//   const method = "GET";
+//   const url =
+//     "http://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+//     latitude +
+//     "," +
+//     longitude +
+//     "&sensor=true" +
+//     "&key=AIzaSyA3zeQUA47kyCgI5XJFJMn6zybxb3jPqeQ";
+//   const async = true;
+
+//   request.open(method, url, async);
+//   request.onreadystatechange = function () {
+//     if (request.readyState == 4 && request.status == 200) {
+//       const data = JSON.parse(request.responseText);
+//       const address = data.results[0];
+//       console.log(data);
+//     }
+//   };
+//   request.send();
+// }
+
+const options = {
+  enableHighAccuracy: true,
+  timeout: 1000,
+  maximumAge: 0,
+};
+
 const Productpage: React.FC = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const auth = useRecoilValue(authState);
   const { sendRequest: getSingleProduct } = useHttp(GetProductById);
+  const { sendRequest: sendLocation } = useHttp(SendLocationHistory);
 
+  useEffect(() => {
+    const successCallback = function (position) {
+      console.log(position);
+      const x = position.coords.latitude;
+      const y = position.coords.longitude;
+
+      sendLocation(
+        (res) => console.log(res),
+        () => {},
+        {
+          payload: {
+            product_id: id,
+            data: "" + x + " " + y,
+          },
+          accessToken: auth?.accessToken,
+        }
+      );
+      // displayLocation(x, y);
+    };
+
+    const errorCallback = function (error) {
+      let errorMessage = "Unknown error";
+      switch (error.code) {
+        case 1:
+          errorMessage = "Permission denied";
+          break;
+        case 2:
+          errorMessage = "Position unavailable";
+          break;
+        case 3:
+          errorMessage = "Timeout";
+          break;
+      }
+      console.log(errorMessage);
+      // document.write(errorMessage);
+    };
+    navigator.geolocation.getCurrentPosition(
+      successCallback,
+      errorCallback,
+      options
+    );
+  }, []);
   useEffect(() => {
     getSingleProduct(
       (res) => {
