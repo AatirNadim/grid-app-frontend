@@ -58,7 +58,7 @@ import { useRecoilValue } from "recoil";
 
 const options = {
   enableHighAccuracy: true,
-  timeout: 1000,
+  timeout: 10000,
   maximumAge: 0,
 };
 
@@ -70,22 +70,32 @@ const Productpage: React.FC = () => {
   const { sendRequest: sendLocation } = useHttp(SendLocationHistory);
 
   useEffect(() => {
-    const successCallback = function (position) {
-      console.log(position);
+    const successCallback = async (position) => {
       const x = position.coords.latitude;
       const y = position.coords.longitude;
 
-      sendLocation(
-        (res) => console.log(res),
-        () => {},
-        {
-          payload: {
-            product_id: id,
-            data: "" + x + " " + y,
-          },
-          accessToken: auth?.accessToken,
-        }
-      );
+      const options = {
+        method: "GET",
+        headers: { Accept: "application/json" },
+      };
+
+      fetch(`https://geocode.maps.co/reverse?lat=${x}&lon=${y}`, options)
+        .then((response) => response.json())
+        .then((response) => {
+          sendLocation(
+            (res) => console.log(res),
+            () => {},
+            {
+              payload: {
+                product_id: id,
+                data: response?.address?.city || response?.address?.state,
+              },
+              accessToken: auth?.accessToken,
+            }
+          );
+        })
+        .catch((err) => console.error(err));
+
       // displayLocation(x, y);
     };
 
@@ -110,7 +120,7 @@ const Productpage: React.FC = () => {
       errorCallback,
       options
     );
-  }, []);
+  }, [auth.isLoggedIn]);
   useEffect(() => {
     getSingleProduct(
       (res) => {
@@ -121,6 +131,7 @@ const Productpage: React.FC = () => {
       { accessToken: auth.accessToken, id: +id }
     );
   }, [id]);
+
   // back to products to set the product detail to null
   return (
     // <div>jkasjas</div>
