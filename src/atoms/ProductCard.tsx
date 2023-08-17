@@ -1,22 +1,46 @@
 import React from "react";
 import { Card, ConfigProvider, Typography, message } from "antd";
 import { Link } from "react-router-dom";
-import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
-import { productState } from "./productState";
-import { useRecoilState } from "recoil";
-import { useNavigate } from "react-router-dom";
+import {
+  HeartFilled,
+  HeartOutlined,
+  ShoppingCartOutlined,
+  ShoppingFilled,
+} from "@ant-design/icons";
+import useHttp from "../hooks/useHttp";
+import { AddToCart, AddToWishList } from "../lib/api";
+import { useRecoilValue } from "recoil";
+import { authState } from "./authState";
 
 const { Meta } = Card;
 interface CardProps {
-  to: string;
   image: string;
   id: number;
   name: string;
   price: number;
+  wishList: boolean;
+  productInventoryId: number;
+  cart: boolean;
 }
-const ProductCard: React.FC<CardProps> = ({ to, image, id, name, price }) => {
-  const navigate = useNavigate();
-  const [productVal, setProductVal] = useRecoilState(productState);
+const ProductCard: React.FC<CardProps> = ({
+  id,
+  image,
+  name,
+  price,
+  wishList,
+  productInventoryId,
+  cart,
+}) => {
+  const { sendRequest } = useHttp(AddToWishList);
+  const { sendRequest: AddCart } = useHttp(AddToCart);
+  const [isWishList, setIsWishlist] = React.useState(wishList);
+  const [isCart, setIsCart] = React.useState(cart);
+  const auth = useRecoilValue(authState);
+
+  React.useEffect(() => {
+    setIsWishlist(wishList);
+    setIsCart(cart);
+  }, [wishList, cart]);
   return (
     <ConfigProvider
       theme={{
@@ -28,14 +52,59 @@ const ProductCard: React.FC<CardProps> = ({ to, image, id, name, price }) => {
     >
       <Card
         actions={[
-          <HeartOutlined
-            onClick={() => message.success("Wishlist")}
-            key="setting"
-          />,
-          <ShoppingCartOutlined
-            onClick={() => message.success("cart")}
-            key="edit"
-          />,
+          !isWishList ? (
+            <HeartOutlined
+              onClick={() => {
+                if (!auth.isLoggedIn) {
+                  message.error("User is not logged in!");
+                  return;
+                } else {
+                  sendRequest(
+                    () => {
+                      message.success("Added to wishlist!");
+                      setIsWishlist(true);
+                    },
+                    (err) => console.log(err),
+                    {
+                      payload: { product_inventory_id: productInventoryId },
+                      accessToken: auth?.accessToken,
+                    }
+                  );
+                }
+              }}
+              key="setting"
+            />
+          ) : (
+            <HeartFilled />
+          ),
+          !isCart ? (
+            <ShoppingCartOutlined
+              onClick={() => {
+                if (!auth.isLoggedIn) {
+                  message.error("User is not logged in!");
+                  return;
+                } else {
+                  AddCart(
+                    () => {
+                      message.success("Added to Cart!");
+                      setIsCart(true);
+                    },
+                    (err) => console.log(err),
+                    {
+                      payload: {
+                        product_inventory_id: productInventoryId,
+                        quantity: 1,
+                      },
+                      accessToken: auth?.accessToken,
+                    }
+                  );
+                }
+              }}
+              key="edit"
+            />
+          ) : (
+            <ShoppingFilled />
+          ),
         ]}
         hoverable
         cover={
@@ -53,24 +122,9 @@ const ProductCard: React.FC<CardProps> = ({ to, image, id, name, price }) => {
         style={{}}
       >
         <Meta
-          // title={<Link to={to}>{name}</Link>}
-          title = {
-            <span onClick={() => {
-              // setProductVal({
-              //   id: id,
-              //   link: to,
-              //   image: image,
-              //   name: name,
-              //   price: price,
-              // });
-              // navigate(`/product?id=${id}`)
-              navigate(`/product/${id}`)
-            }} 
-              className="hover:text-blue-600 transition "
-            >{name}</span>
-          }
+          title={<Link to={`/product/${id}`}>{name}</Link>}
           description={
-            <Typography.Title level={5}>Rs. {price}</Typography.Title>
+            <Typography.Title level={5}>Rs. {price || 1000}</Typography.Title>
           }
         />
       </Card>

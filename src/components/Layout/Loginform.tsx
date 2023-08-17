@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Form, Input, Modal } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import useHttp from "../../hooks/useHttp";
 import { UserLogin } from "../../lib/api";
+import { useSetRecoilState } from "recoil";
+import { authState } from "../../atoms/authState";
 
 interface Values {
   email: string;
@@ -95,6 +98,7 @@ const CollectionCreateForm: React.FC<CollectionCreateFormProps> = ({
 
 const LoginModal: React.FC<LoginProps> = ({ open, setOpen }) => {
   const { sendRequest, isLoading } = useHttp(UserLogin);
+  const setAuthState = useSetRecoilState(authState);
   const onCreate = (values) => {
     console.log("Received values of form: ", values);
     const payload = {
@@ -105,6 +109,15 @@ const LoginModal: React.FC<LoginProps> = ({ open, setOpen }) => {
     sendRequest(
       (res) => {
         console.log(res);
+        localStorage.setItem("accessToken", res.access);
+        localStorage.setItem("refreshToken", res.refresh);
+        setAuthState((prev) => {
+          return {
+            isLoggedIn: true,
+            accessToken: res.access,
+            refreshToken: res.refresh,
+          };
+        });
         setOpen(false);
       },
       (err) => {
