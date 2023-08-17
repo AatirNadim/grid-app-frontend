@@ -21,7 +21,7 @@ const ProductRows = () => {
   const [normalProducts, setNormalProducts] = useState([]);
 
   useEffect(() => {
-    if (auth.isLoggedIn) {
+    if (auth?.isLoggedIn && auth?.accessToken !== "") {
       getWishlistedProducts(
         (wishlist) => {
           getCartProducts(
