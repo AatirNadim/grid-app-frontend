@@ -70,18 +70,18 @@ const Productpage: React.FC = () => {
             <Typography.Title level={3} className="text-left">
               {`Rs. ${products[Number.parseInt(id) - 1].price}`}
             </Typography.Title>
-            <Row>
-              <Col span={8}>
+            <Row gutter={[0, 12]} >
+              <Col span={24}>
                 <Button
                   size="large"
                   type="primary"
                   icon={<ShoppingFilled />}
-                  className="bg-[#A459D1] font-semibold"
+                  className="bg-[#A459D1] font-semibold w-56"
                 >
                   Buy Now
                 </Button>
               </Col>
-              <Col span={8}>
+              <Col span={12}>
                 <Button
                   size="large"
                   type="default"
@@ -91,7 +91,7 @@ const Productpage: React.FC = () => {
                   Add to cart
                 </Button>
               </Col>
-              <Col span={8}>
+              <Col span={12}>
                 <Button
                   type="text"
                   size="large"
@@ -104,9 +104,9 @@ const Productpage: React.FC = () => {
             </Row>
           </Col>
         </Row>
-        <Row gutter={[24, 24]}>
+        <Row gutter={[24, 24]} className="p-24" >
           {new Array(8).fill(0).map((itr) => (
-            <Col xl={6} md={8} sm={12} xs={24}>
+            <Col xl={6} md={8} sm={12} xs={24}  >
               <ProductCard
                 to={filler.link}
                 image={filler.image}

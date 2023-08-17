@@ -55,7 +55,13 @@ const TopNavigation = () => {
             </Col>
             <Col span={12} style={{ display: "flex", alignItems: "center" }}>
               {/* Searchbar */}
-              <Input.Search placeholder="Basic usage" />
+              <Input.Search  size="large" allowClear placeholder="Basic usage"  styles={{
+                // input: {
+                //   height: '2rem',
+                //   width: '20rem',
+                // },
+                
+              }} className="" />
             </Col>
           </Row>
         </Col>
