@@ -6,7 +6,7 @@ import {
   HeartOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LoginModal from "./Loginform";
 import SignupModal from "./SignupForm";
 import { useRecoilValue } from "recoil";
@@ -22,6 +22,7 @@ const TopNavigation = () => {
   const [signupOpen, setSignupOpen] = useState(false);
   const [wishlistOpen, setWishlistOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const navigate = useNavigate();
   const auth = useRecoilValue(authState);
 
   return (
@@ -65,7 +66,13 @@ const TopNavigation = () => {
               style={{ display: "flex", alignItems: "center" }}
             >
               {/* Searchbar */}
-              <Input.Search placeholder="Basic usage" />
+              <Input.Search
+                onSearch={(prompt) => {
+                  if (prompt === "") return;
+                  navigate("/search/" + prompt);
+                }}
+                placeholder="Basic usage"
+              />
             </Col>
           </Row>
         </Col>
