@@ -19,7 +19,6 @@ interface CardProps {
   name: string;
   price: number;
   wishList: boolean;
-  productInventoryId: number;
   cart: boolean;
 }
 const ProductCard: React.FC<CardProps> = ({
@@ -28,7 +27,6 @@ const ProductCard: React.FC<CardProps> = ({
   name,
   price,
   wishList,
-  productInventoryId,
   cart,
 }) => {
   const { sendRequest } = useHttp(AddToWishList);
@@ -66,7 +64,7 @@ const ProductCard: React.FC<CardProps> = ({
                     },
                     (err) => console.log(err),
                     {
-                      payload: { product_inventory_id: productInventoryId },
+                      payload: { product_id: id },
                       accessToken: auth?.accessToken,
                     }
                   );
@@ -92,7 +90,7 @@ const ProductCard: React.FC<CardProps> = ({
                     (err) => console.log(err),
                     {
                       payload: {
-                        product_inventory_id: productInventoryId,
+                        product_id: id,
                         quantity: 1,
                       },
                       accessToken: auth?.accessToken,

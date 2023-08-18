@@ -87,8 +87,8 @@ const ProductRows = () => {
                     image={item.image}
                     id={item.id}
                     name={item.name}
-                    productInventoryId={item?.inventory[0]?.id}
-                    price={+item?.inventory[0]?.price}
+                    // productInventoryId={item?.inventory[0]?.id}
+                    price={+item?.price}
                   />
                 </Col>
               );
