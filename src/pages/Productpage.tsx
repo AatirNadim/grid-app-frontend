@@ -162,7 +162,7 @@ const Productpage: React.FC = () => {
               {product?.description}
             </Typography.Text>
             <Typography.Title level={3} className="text-left">
-              {`Rs. ${product?.inventory[0]?.price}`}
+              {`Rs. ${product?.price}`}
             </Typography.Title>
             <Row>
               <Col span={8}>
