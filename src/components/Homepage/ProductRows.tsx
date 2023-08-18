@@ -12,6 +12,7 @@ import {
 import { useRecoilValue } from "recoil";
 import { authState } from "../../atoms/authState";
 const { useBreakpoint } = Grid;
+
 const ProductRows = () => {
   const { xl, md } = useBreakpoint();
   const { sendRequest: getProducts } = useHttp(getALLProductsWithoutLogin);
