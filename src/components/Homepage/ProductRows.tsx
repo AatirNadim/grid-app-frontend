@@ -116,7 +116,7 @@ const ProductRows = () => {
         </Col>
         <Col span={24}>
           <Typography.Title level={1} style={{ marginBottom: "4rem" }}>
-            Recommended for You.
+            Recommended for You
           </Typography.Title>
           <Row gutter={[24, 24]}>
             {recommendedProducts?.slice(0, 8)?.map((item, idx) => {

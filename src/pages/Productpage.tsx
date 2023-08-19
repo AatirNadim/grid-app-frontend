@@ -9,6 +9,7 @@ import useHttp from "../hooks/useHttp";
 import { GetProductById, SendLocationHistory } from "../lib/api";
 import { authState } from "../atoms/authState";
 import { useRecoilValue } from "recoil";
+import ChangeModal from "../components/Layout/ChangeModal";
 
 const options = {
   enableHighAccuracy: true,
@@ -22,6 +23,7 @@ const Productpage: React.FC = () => {
   const auth = useRecoilValue(authState);
   const { sendRequest: getSingleProduct } = useHttp(GetProductById);
   const { sendRequest: sendLocation } = useHttp(SendLocationHistory);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const successCallback = async (position) => {
@@ -96,6 +98,7 @@ const Productpage: React.FC = () => {
         },
       }}
     >
+      <ChangeModal open={open} setOpen={setOpen} product={product} />
       <Row
         style={{
           padding: "4rem 0",
@@ -113,6 +116,7 @@ const Productpage: React.FC = () => {
               width: "100%",
             }}
             src={product?.image}
+            alt="image not available"
           />
         </Col>
         <Col
@@ -140,6 +144,7 @@ const Productpage: React.FC = () => {
                 shape="circle"
                 type="primary"
                 style={{ boxShadow: "2px 2px 2px 1px rgba(0, 0, 0, 0.2)" }}
+                onClick={() => {setOpen(true)}}
               />
             </Col>
           </Row>
