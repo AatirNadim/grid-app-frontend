@@ -215,3 +215,18 @@ export const PlaceOrder = async (payload) => {
     throw error;
   }
 };
+
+export const GetImageWithPrompt = async(payload) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/api/product/generateImagetoImage/`, {
+      ...payload?.payload,
+    },
+    { headers: { Authorization: "Bearer " + payload.accessToken } }
+    )
+    console.log('resposne from getimagewith prompt api', response)
+    return response.data
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}

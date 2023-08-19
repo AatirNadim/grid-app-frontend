@@ -137,6 +137,7 @@ const ProductRows = () => {
               Recommended for You
             </Typography.Title>
           )}
+
           <Row gutter={[24, 24]}>
             {recommendedProducts?.slice(0, 8)?.map((item, idx) => {
               return (
