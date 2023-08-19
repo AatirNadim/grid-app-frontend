@@ -230,3 +230,17 @@ export const GetImageWithPrompt = async(payload) => {
     throw err;
   }
 }
+
+export const RequestProduct = async(payload) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/api/product/requestProduct/`, {
+      ...payload?.payload,
+    },
+    { headers: { Authorization: "Bearer " + payload.accessToken } }
+    )
+    return response.data
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}

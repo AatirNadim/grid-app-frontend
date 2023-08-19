@@ -1,7 +1,7 @@
 import { Button, Col, ConfigProvider, Modal, Row, message, Input } from "antd";
 import useHttp from "../../hooks/useHttp";
 import React, { useEffect } from "react";
-import { GetImageWithPrompt } from "../../lib/api";
+import { GetImageWithPrompt, RequestProduct } from "../../lib/api";
 import { authState } from "../../atoms/authState";
 import { useRecoilValue } from "recoil";
 
@@ -19,6 +19,7 @@ const ChangeModal: React.FC<ChangeProps> = ({ open, setOpen, product }) => {
   const [inpPrompt, setInpPrompt] = React.useState("");
   const [possFinal, setPossFinal] = React.useState(false);
   const { sendRequest: GenerateImage } = useHttp(GetImageWithPrompt);
+  const { sendRequest: requestProduct } = useHttp(RequestProduct);
   // post the call, get the result
 
   useEffect(() => {
@@ -27,8 +28,18 @@ const ChangeModal: React.FC<ChangeProps> = ({ open, setOpen, product }) => {
   }, [product]);
 
   const handleFinalClick = () => {
-    console.log('final click')
-
+    console.log("final click");
+    requestProduct(
+      () => {
+        messageApi.success("Requested for Product.");
+        setOpen(false);
+      },
+      () => {},
+      {
+        payload: { product_image: dispProduct?.image },
+        accessToken: auth?.accessToken,
+      }
+    );
   };
 
   const handleClick = () => {
@@ -151,7 +162,7 @@ const ChangeModal: React.FC<ChangeProps> = ({ open, setOpen, product }) => {
                 }}
               >
                 <Button
-                  loading={loading}
+                  // loading={loading}
                   type="primary"
                   onClick={handleFinalClick}
                   disabled={!possFinal || !loading}
