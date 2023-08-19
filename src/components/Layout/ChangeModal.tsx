@@ -14,13 +14,11 @@ interface ChangeProps {
 const ChangeModal: React.FC<ChangeProps> = ({ open, setOpen, product }) => {
   const auth = useRecoilValue(authState);
   const [dispProduct, setDispProduct] = React.useState(null);
-  const [loading, setLoading] = React.useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const [inpPrompt, setInpPrompt] = React.useState("");
   const [possFinal, setPossFinal] = React.useState(false);
-  const { sendRequest: GenerateImage } = useHttp(GetImageWithPrompt);
+  const { sendRequest: GenerateImage, isLoading } = useHttp(GetImageWithPrompt);
   const { sendRequest: requestProduct } = useHttp(RequestProduct);
-  // post the call, get the result
 
   useEffect(() => {
     setDispProduct(product);
@@ -43,19 +41,19 @@ const ChangeModal: React.FC<ChangeProps> = ({ open, setOpen, product }) => {
   };
 
   const handleClick = () => {
-    if (loading) {
+    if (isLoading) {
       msgInfo();
       return;
     }
     setPossFinal(true);
-    setLoading(true);
+    // setLoading(true);
     // return;
     GenerateImage(
-      (res) => setDispProduct(res),
+      (res) => setDispProduct({ image: res }),
       (err) => console.error("error fecthing generated image\n\n", err),
       {
         payload: {
-          url: dispProduct?.url,
+          image_url: dispProduct?.image,
           prompt: inpPrompt,
         },
         accessToken: auth?.accessToken,
@@ -72,7 +70,7 @@ const ChangeModal: React.FC<ChangeProps> = ({ open, setOpen, product }) => {
   };
 
   const handleClose = () => {
-    if (loading) {
+    if (isLoading) {
       msgInfo();
       return;
     }
@@ -141,8 +139,8 @@ const ChangeModal: React.FC<ChangeProps> = ({ open, setOpen, product }) => {
               <Col span={22} offset={2}>
                 <Button
                   type="primary"
-                  loading={loading}
-                  disabled={loading || inpPrompt.length === 0}
+                  loading={isLoading}
+                  disabled={inpPrompt.length === 0}
                   style={{
                     marginLeft: "auto",
                   }}
@@ -165,7 +163,7 @@ const ChangeModal: React.FC<ChangeProps> = ({ open, setOpen, product }) => {
                   // loading={loading}
                   type="primary"
                   onClick={handleFinalClick}
-                  disabled={!possFinal || !loading}
+                  disabled={!possFinal || isLoading}
                 >
                   Request the product
                 </Button>
