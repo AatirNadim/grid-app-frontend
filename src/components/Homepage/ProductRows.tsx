@@ -90,7 +90,11 @@ const ProductRows = () => {
     <>
       <Row
         gutter={[24, 24]}
-        style={{ padding: xl ? "6rem" : md ? "4rem" : "4rem 2rem" }}
+        style={{
+          padding: xl ? "6rem" : md ? "3rem" : "4rem 2rem",
+          marginLeft: 0,
+          marginRight: 0,
+        }}
       >
         <Col span={24}>
           <Typography.Title level={1} style={{ marginBottom: "4rem" }}>
