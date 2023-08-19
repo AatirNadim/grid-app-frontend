@@ -2,59 +2,13 @@
 import { Button, Col, ConfigProvider, Row, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 // import ProductCard from "../atoms/ProductCard";
-import { Image } from "antd";
-import {
-  HeartFilled,
-  ShoppingCartOutlined,
-  ShoppingFilled,
-} from "@ant-design/icons";
+import { SettingOutlined, ShoppingFilled } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 // import { products } from "../utils/products";
 import useHttp from "../hooks/useHttp";
 import { GetProductById, SendLocationHistory } from "../lib/api";
 import { authState } from "../atoms/authState";
 import { useRecoilValue } from "recoil";
-
-// interface Iprops {
-//   image: string;
-//   name: string;
-//   price: number;
-//   id: number;
-// }
-
-// const filler = {
-//   link: "/",
-//   image: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png",
-//   id: 1,
-//   name: "Cotton Schiffli Tier Dress",
-//   price: 2199,
-//   description:
-//     "This is a beautiful dress, I truly recomment you to buy it so i can tear it off your body. Yeah, you know what I mean.",
-// };
-
-// function displayLocation(latitude, longitude) {
-//   const request = new XMLHttpRequest();
-
-//   const method = "GET";
-//   const url =
-//     "http://maps.googleapis.com/maps/api/geocode/json?latlng=" +
-//     latitude +
-//     "," +
-//     longitude +
-//     "&sensor=true" +
-//     "&key=AIzaSyA3zeQUA47kyCgI5XJFJMn6zybxb3jPqeQ";
-//   const async = true;
-
-//   request.open(method, url, async);
-//   request.onreadystatechange = function () {
-//     if (request.readyState == 4 && request.status == 200) {
-//       const data = JSON.parse(request.responseText);
-//       const address = data.results[0];
-//       console.log(data);
-//     }
-//   };
-//   request.send();
-// }
 
 const options = {
   enableHighAccuracy: true,
@@ -132,86 +86,99 @@ const Productpage: React.FC = () => {
     );
   }, [id]);
 
-  // back to products to set the product detail to null
   return (
-    // <div>jkasjas</div>
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: "#A459D1",
-          colorPrimaryHover: "#7b439e",
+          colorPrimary: "#FC7300",
+          colorPrimaryHover: "#BFDB38",
+          borderRadius: 4,
         },
       }}
     >
-      <Col span={24}>
-        <Row
-          style={{
-            padding: "20px",
-            backgroundColor: "#F5F5F5",
-          }}
-          // gutter={[16, 24]}
+      <Row
+        style={{
+          padding: "4rem 0",
+          backgroundColor: "#F5F5F5",
+        }}
+        gutter={[24, 24]}
+        justify="center"
+      >
+        <Col xl={8} lg={10} sm={18} xs={20} style={{ display: "flex" }}>
+          <img
+            style={{
+              borderRadius: 6,
+              objectFit: "cover",
+              objectPosition: "top",
+              width: "100%",
+            }}
+            src={product?.image}
+          />
+        </Col>
+        <Col
+          style={{ textAlign: "left", paddingLeft: "1rem" }}
+          xl={10}
+          lg={12}
+          sm={18}
+          xs={20}
         >
-          <Col className="h-[500px]" xl={12} md={12} sm={24} xs={24}>
-            <Image src={product?.image} height={"inherit"} />
-          </Col>
-          <Col xl={12} md={12} sm={24} xs={24}>
-            <Typography.Title className="text-left">
-              {product?.name}
-            </Typography.Title>
-            <Typography.Text className="block text-left text-lg font-normal">
-              {product?.description}
-            </Typography.Text>
-            <Typography.Title level={3} className="text-left">
-              {`Rs. ${product?.inventory[0]?.price}`}
-            </Typography.Title>
-            <Row gutter={[0, 12]} >
-              <Col span={24}>
-                <Button
-                  size="large"
-                  type="primary"
-                  icon={<ShoppingFilled />}
-                  className="bg-[#A459D1] font-semibold w-56"
-                >
-                  Buy Now
-                </Button>
-              </Col>
-              <Col span={12}>
-                <Button
-                  size="large"
-                  type="default"
-                  className="font-semibold text-[#A459D1] border-[#A459D1] border-2"
-                  icon={<ShoppingCartOutlined className="text-[#A459D1]" />}
-                >
-                  Add to cart
-                </Button>
-              </Col>
-              <Col span={12}>
-                <Button
-                  type="text"
-                  size="large"
-                  className="font-semibold border-2 border-pink-700"
-                  icon={<HeartFilled className="text-pink-700" />}
-                >
-                  Wishlist
-                </Button>
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-        {/* <Row gutter={[24, 24]}>
-          {new Array(8).fill(0).map((itr) => (
-            <Col xl={6} md={8} sm={12} xs={24}  >
-              <ProductCard
-                to={filler.link}
-                image={filler.image}
-                id={filler.id}
-                name={filler.name}
-                price={filler.price}
+          <Typography.Title level={2} style={{ marginTop: 0, fontWeight: 400 }}>
+            {product?.name}
+          </Typography.Title>
+          <Row>
+            <Col span={12}>
+              <Typography.Title level={5} style={{ marginTop: 0 }}>
+                Designed By:{" "}
+                <Typography.Text style={{ color: "gray" }}>
+                  {product?.brand}
+                </Typography.Text>
+              </Typography.Title>
+            </Col>
+            <Col span={12} style={{ display: "flex", justifyContent: "end" }}>
+              <Button
+                icon={<SettingOutlined />}
+                shape="circle"
+                type="primary"
+                style={{ boxShadow: "2px 2px 2px 1px rgba(0, 0, 0, 0.2)" }}
               />
             </Col>
-          ))}
-        </Row> */}
-      </Col>
+          </Row>
+
+          <Typography.Title
+            level={2}
+            style={{ fontWeight: 500, marginTop: "1.5rem" }}
+          >
+            {`$ ${product?.price}`}
+          </Typography.Title>
+          <Typography.Title level={4}>
+            Color:{" "}
+            <Typography.Text style={{ color: "gray", fontSize: "18px" }}>
+              {product?.color}
+            </Typography.Text>
+          </Typography.Title>
+          <Row style={{ marginTop: "3rem" }}>
+            <Col span={24}>
+              <Button
+                size="large"
+                type="primary"
+                block
+                icon={<ShoppingFilled />}
+              >
+                Buy Now
+              </Button>
+            </Col>
+          </Row>
+          <Typography.Title level={4} style={{ marginTop: "3rem" }}>
+            Description
+          </Typography.Title>
+          <Typography.Title
+            level={5}
+            style={{ fontWeight: 500, color: "gray", marginTop: "0" }}
+          >
+            {product?.description}
+          </Typography.Title>
+        </Col>
+      </Row>
     </ConfigProvider>
   );
 };
