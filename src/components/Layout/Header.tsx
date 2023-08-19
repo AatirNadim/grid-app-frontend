@@ -13,6 +13,7 @@ import { useRecoilValue } from "recoil";
 import { authState } from "../../atoms/authState";
 import WishlistModal from "./WishlistModal";
 import CartModal from "./CartModal";
+import OrdersModal from "./OrdersModal";
 
 const { useBreakpoint } = Grid;
 
@@ -22,6 +23,7 @@ const TopNavigation = () => {
   const [signupOpen, setSignupOpen] = useState(false);
   const [wishlistOpen, setWishlistOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [ordersOpen, setOrdersOpen] = useState(false);
   const navigate = useNavigate();
   const auth = useRecoilValue(authState);
 
@@ -41,6 +43,7 @@ const TopNavigation = () => {
       <LoginModal open={loginOpen} setOpen={setLoginOpen} />
       <SignupModal open={signupOpen} setOpen={setSignupOpen} />
       <WishlistModal open={wishlistOpen} setOpen={setWishlistOpen} />
+      <OrdersModal open={ordersOpen} setOpen={setOrdersOpen} />
       <CartModal open={cartOpen} setOpen={setCartOpen} />
       <Row
         // className="sticky top-0 z-10 bg-white shadow-md"
@@ -133,8 +136,13 @@ const TopNavigation = () => {
             </Button>
           )}
           {auth?.isLoggedIn && lg && (
-            <Button size="large" type="link" icon={<UserOutlined />}>
-              Account
+            <Button
+              size="large"
+              type="link"
+              icon={<UserOutlined />}
+              onClick={() => setOrdersOpen(true)}
+            >
+              Orders
             </Button>
           )}
         </Col>

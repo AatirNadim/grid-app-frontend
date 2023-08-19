@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Button, Col, ConfigProvider, Row, Typography } from "antd";
+import { Button, Col, ConfigProvider, Row, Typography, message } from "antd";
 import React, { useEffect, useState } from "react";
 // import ProductCard from "../atoms/ProductCard";
 import { SettingOutlined, ShoppingFilled } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 // import { products } from "../utils/products";
 import useHttp from "../hooks/useHttp";
-import { GetProductById, SendLocationHistory } from "../lib/api";
+import { GetProductById, PlaceOrder, SendLocationHistory } from "../lib/api";
 import { authState } from "../atoms/authState";
 import { useRecoilValue } from "recoil";
 
@@ -22,6 +22,7 @@ const Productpage: React.FC = () => {
   const auth = useRecoilValue(authState);
   const { sendRequest: getSingleProduct } = useHttp(GetProductById);
   const { sendRequest: sendLocation } = useHttp(SendLocationHistory);
+  const { sendRequest: BuyProduct } = useHttp(PlaceOrder);
 
   useEffect(() => {
     const successCallback = async (position) => {
@@ -163,8 +164,18 @@ const Productpage: React.FC = () => {
                 type="primary"
                 block
                 icon={<ShoppingFilled />}
+                onClick={() => {
+                  BuyProduct(
+                    (res) => message.success("Order Placed Successfully!"),
+                    () => {},
+                    {
+                      payload: { product_id: product?.id },
+                      accessToken: auth?.accessToken,
+                    }
+                  );
+                }}
               >
-                Buy Now
+                Place Order
               </Button>
             </Col>
           </Row>
