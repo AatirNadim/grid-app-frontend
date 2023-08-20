@@ -27,6 +27,7 @@ const ProductsPage = () => {
       () => {},
       { payload: { prompt: prompt }, accessToken: auth.accessToken }
     );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [prompt]);
   return (
     <Row
