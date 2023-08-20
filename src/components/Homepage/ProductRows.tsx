@@ -110,28 +110,6 @@ const ProductRows = () => {
         }}
       >
         <Col span={24}>
-          <Typography.Title level={1} style={{ marginBottom: "4rem" }}>
-            Our Products
-          </Typography.Title>
-          <Row gutter={[24, 24]}>
-            {normalProducts?.slice(0, 8)?.map((item, idx) => {
-              return (
-                <Col key={idx} xl={6} md={8} sm={12} xs={24}>
-                  <ProductCard
-                    wishList={item?.isWishList}
-                    cart={item?.isCart}
-                    image={item.image}
-                    id={item.id}
-                    name={item.name}
-                    // productInventoryId={item?.inventory[0]?.id}
-                    price={+item?.price}
-                  />
-                </Col>
-              );
-            })}
-          </Row>
-        </Col>
-        <Col span={24}>
           {recommendedProducts?.length > 0 && (
             <Typography.Title level={1} style={{ marginBottom: "4rem" }}>
               Recommended for You
@@ -164,6 +142,28 @@ const ProductRows = () => {
           )}
           <Row gutter={[24, 24]}>
             {locationProducts?.slice(0, 8)?.map((item, idx) => {
+              return (
+                <Col key={idx} xl={6} md={8} sm={12} xs={24}>
+                  <ProductCard
+                    wishList={item?.isWishList}
+                    cart={item?.isCart}
+                    image={item.image}
+                    id={item.id}
+                    name={item.name}
+                    // productInventoryId={item?.inventory[0]?.id}
+                    price={+item?.price}
+                  />
+                </Col>
+              );
+            })}
+          </Row>
+        </Col>
+        <Col span={24}>
+          <Typography.Title level={1} style={{ marginBottom: "4rem" }}>
+            Our Products
+          </Typography.Title>
+          <Row gutter={[24, 24]}>
+            {normalProducts?.slice(0, 8)?.map((item, idx) => {
               return (
                 <Col key={idx} xl={6} md={8} sm={12} xs={24}>
                   <ProductCard

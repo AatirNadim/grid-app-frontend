@@ -98,10 +98,11 @@ const ChangeModal: React.FC<ChangeProps> = ({ open, setOpen, product }) => {
         onCancel={handleClose}
         footer={<></>}
       >
-        <Row>
+        <Row style={{ height: "100%" }}>
           <Col span={12}>
             <img
               style={{
+                height: "100%",
                 borderRadius: 6,
                 objectFit: "cover",
                 objectPosition: "top",
