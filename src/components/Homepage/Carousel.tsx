@@ -5,15 +5,15 @@ import { Carousel } from "antd";
 const images = [
   {
     image:
-      "https://images.unsplash.com/photo-1570875625565-4aaf02f5655f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDJ8fHNob3dyb29tfGVufDB8fHx8MTYzMzQ0MzU0MQ&ixlib=rb-1.2.1&q=80&w=2000",
+      "https://d3jmn01ri1fzgl.cloudfront.net/photoadking/compressed/5fed81142f212_json_image_1609400596.jpg",
   },
   {
     image:
-      "https://static.startuptalky.com/2022/05/fast-fashion-brands-business-models-startuptalky-.jpg",
+      "https://marketplace.canva.com/EAFGKRRskMs/1/0/1600w/canva-brown-and-beige-minimalist-fashion-banner-lYcbGpUSVGo.jpg",
   },
   {
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi39DUsDrg3JGHf-gLN1-ilSPoKlcbUXrgcA&usqp=CAU",
+      "https://marketplace.canva.com/EAFVHstxnwk/1/0/1600w/canva-beige-aesthetic-exclusive-fashion-wear-collection-clothing-banner-BZb4KkCdNP0.jpg",
   },
 ];
 

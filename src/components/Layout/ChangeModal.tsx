@@ -1,9 +1,22 @@
-import { Button, Col, ConfigProvider, Modal, Row, message, Input } from "antd";
+import {
+  Button,
+  Col,
+  ConfigProvider,
+  Modal,
+  Row,
+  message,
+  Input,
+  Divider,
+  Upload,
+  UploadProps,
+} from "antd";
 import useHttp from "../../hooks/useHttp";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { GetImageWithPrompt, RequestProduct } from "../../lib/api";
 import { authState } from "../../atoms/authState";
 import { useRecoilValue } from "recoil";
+import { UploadOutlined } from "@ant-design/icons";
+import axios from "axios";
 
 interface ChangeProps {
   open: boolean;
@@ -19,6 +32,7 @@ const ChangeModal: React.FC<ChangeProps> = ({ open, setOpen, product }) => {
   const [possFinal, setPossFinal] = React.useState(false);
   const { sendRequest: GenerateImage, isLoading } = useHttp(GetImageWithPrompt);
   const { sendRequest: requestProduct } = useHttp(RequestProduct);
+  const [cloudinaryLoading, setCloudinaryLoading] = useState(false);
 
   useEffect(() => {
     setDispProduct(product?.product);
@@ -117,7 +131,7 @@ const ChangeModal: React.FC<ChangeProps> = ({ open, setOpen, product }) => {
             style={{
               display: "flex",
               flexDirection: "column",
-              justifyContent: "space-between",
+              // justifyContent: "space-between",
               paddingBottom: "1rem",
             }}
           >
@@ -128,7 +142,7 @@ const ChangeModal: React.FC<ChangeProps> = ({ open, setOpen, product }) => {
                 alignItems: "center",
               }}
             >
-              <Col span={22} offset={2}>
+              <Col span={23} offset={1}>
                 <Input.TextArea
                   placeholder="Enter prompt to change the attire.."
                   rows={5}
@@ -137,11 +151,11 @@ const ChangeModal: React.FC<ChangeProps> = ({ open, setOpen, product }) => {
                   }}
                 ></Input.TextArea>
               </Col>
-              <Col span={22} offset={2}>
+              <Col span={11} offset={1}>
                 <Button
                   type="primary"
                   loading={isLoading}
-                  disabled={inpPrompt.length === 0}
+                  // disabled={inpPrompt.length === 0}
                   style={{
                     marginLeft: "auto",
                   }}
@@ -150,10 +164,8 @@ const ChangeModal: React.FC<ChangeProps> = ({ open, setOpen, product }) => {
                   Generate Image
                 </Button>
               </Col>
-            </Row>
-            <Row>
               <Col
-                span={24}
+                span={11}
                 style={{
                   display: "flex",
                   flexDirection: "row",
@@ -164,12 +176,51 @@ const ChangeModal: React.FC<ChangeProps> = ({ open, setOpen, product }) => {
                   // loading={loading}
                   type="primary"
                   onClick={handleFinalClick}
-                  disabled={!possFinal || isLoading}
+                  // disabled={!possFinal || isLoading}
                 >
                   Request the product
                 </Button>
               </Col>
             </Row>
+            <Divider style={{ marginTop: "3rem" }} />
+            <Row style={{ marginTop: "2rem" }}>
+              <Col
+                span={22}
+                offset={2}
+                style={{ justifyContent: "center", display: "flex" }}
+              >
+                <Upload
+                  maxCount={1}
+                  showUploadList={false}
+                  beforeUpload={async (file, fileList) => {
+                    console.log(fileList);
+                    setCloudinaryLoading(true);
+                    const formData = new FormData();
+                    formData.append("file", file);
+                    formData.append("upload_preset", "blogapppreset");
+                    let data = "";
+                    await axios
+                      .post(
+                        "https://api.cloudinary.com/v1_1/dntn0wocu/image/upload",
+                        formData
+                      )
+                      .then((response) => {
+                        data = response?.data["secure_url"];
+                        console.log(data);
+                        setCloudinaryLoading(false);
+                        setDispProduct({ image: data });
+                      });
+
+                    return false;
+                  }}
+                >
+                  <Button loading={cloudinaryLoading} icon={<UploadOutlined />}>
+                    Upload File to customize
+                  </Button>
+                </Upload>
+              </Col>
+            </Row>
+            <Row></Row>
           </Col>
         </Row>
       </Modal>

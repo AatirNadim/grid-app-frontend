@@ -1,9 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Grid, ConfigProvider, Row, Col, Button, Input } from "antd";
+import {
+  Grid,
+  ConfigProvider,
+  Row,
+  Col,
+  Button,
+  Input,
+  Typography,
+} from "antd";
 import {
   UserOutlined,
   ShoppingCartOutlined,
-  HeartOutlined,
+  HeartFilled,
 } from "@ant-design/icons";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -37,6 +45,7 @@ const TopNavigation = () => {
           borderRadius: 4,
           colorLink: "#213555",
           colorLinkHover: "#B799FF",
+          lineWidth: 2,
         },
       }}
     >
@@ -58,9 +67,30 @@ const TopNavigation = () => {
       >
         <Col sm={24} lg={14}>
           <Row gutter={12}>
-            <Col span={8} className="flex justify-center !items-center">
+            <Col span={6} className="flex justify-center !items-center">
               <Link to="/">
-                <img src="https://uploads-ssl.webflow.com/63e857eaeaf853471d5335ff/63e86ab4c21faa7bc0bd90dd_Logo.svg" />
+                <Typography.Text
+                  style={{
+                    margin: 0,
+                    fontFamily: "cursive",
+                    fontSize: "32px",
+                    color: "#FC7300",
+                    fontWeight: 600,
+                  }}
+                >
+                  Grid
+                </Typography.Text>
+                <Typography.Text
+                  style={{
+                    margin: 0,
+                    fontFamily: "cursive",
+                    fontSize: "32px",
+                    color: "#2874f0",
+                    fontWeight: 600,
+                  }}
+                >
+                  Kart
+                </Typography.Text>
               </Link>
             </Col>
             <Col
@@ -74,7 +104,7 @@ const TopNavigation = () => {
                   if (prompt === "") return;
                   navigate("/search/" + prompt);
                 }}
-                placeholder="Basic usage"
+                placeholder="Search for products..."
               />
             </Col>
           </Row>
@@ -129,7 +159,7 @@ const TopNavigation = () => {
               style={{ marginRight: "1rem" }}
               size="large"
               type="link"
-              icon={<HeartOutlined />}
+              icon={<HeartFilled />}
               onClick={() => setWishlistOpen(true)}
             >
               Wishlist
