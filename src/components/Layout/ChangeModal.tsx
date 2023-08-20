@@ -21,7 +21,7 @@ const ChangeModal: React.FC<ChangeProps> = ({ open, setOpen, product }) => {
   const { sendRequest: requestProduct } = useHttp(RequestProduct);
 
   useEffect(() => {
-    setDispProduct(product);
+    setDispProduct(product?.product);
     // console.log(product)
   }, [product]);
 

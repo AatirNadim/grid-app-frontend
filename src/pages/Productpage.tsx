@@ -1,5 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Button, Col, ConfigProvider, Row, Typography, message } from "antd";
+import {
+  Button,
+  Col,
+  ConfigProvider,
+  Row,
+  Typography,
+  message,
+  Grid,
+} from "antd";
 import React, { useEffect, useState } from "react";
 // import ProductCard from "../atoms/ProductCard";
 import { SettingOutlined, ShoppingFilled } from "@ant-design/icons";
@@ -10,6 +18,7 @@ import { GetProductById, PlaceOrder, SendLocationHistory } from "../lib/api";
 import { authState } from "../atoms/authState";
 import { useRecoilValue } from "recoil";
 import ChangeModal from "../components/Layout/ChangeModal";
+import ProductCard from "../atoms/ProductCard";
 
 const options = {
   enableHighAccuracy: true,
@@ -25,6 +34,7 @@ const Productpage: React.FC = () => {
   const { sendRequest: sendLocation } = useHttp(SendLocationHistory);
   const { sendRequest: BuyProduct } = useHttp(PlaceOrder);
   const [open, setOpen] = useState(false);
+  const { xl, md } = Grid.useBreakpoint();
 
   useEffect(() => {
     const successCallback = async (position) => {
@@ -116,7 +126,7 @@ const Productpage: React.FC = () => {
               objectPosition: "top",
               width: "100%",
             }}
-            src={product?.image}
+            src={product?.product?.image}
             alt="image not available"
           />
         </Col>
@@ -128,14 +138,14 @@ const Productpage: React.FC = () => {
           xs={20}
         >
           <Typography.Title level={2} style={{ marginTop: 0, fontWeight: 400 }}>
-            {product?.name}
+            {product?.product?.name}
           </Typography.Title>
           <Row>
             <Col span={12}>
               <Typography.Title level={5} style={{ marginTop: 0 }}>
                 Designed By:{" "}
                 <Typography.Text style={{ color: "gray" }}>
-                  {product?.brand}
+                  {product?.product?.brand}
                 </Typography.Text>
               </Typography.Title>
             </Col>
@@ -145,7 +155,9 @@ const Productpage: React.FC = () => {
                 shape="circle"
                 type="primary"
                 style={{ boxShadow: "2px 2px 2px 1px rgba(0, 0, 0, 0.2)" }}
-                onClick={() => {setOpen(true)}}
+                onClick={() => {
+                  setOpen(true);
+                }}
               />
             </Col>
           </Row>
@@ -154,12 +166,12 @@ const Productpage: React.FC = () => {
             level={2}
             style={{ fontWeight: 500, marginTop: "1.5rem" }}
           >
-            {`$ ${product?.price}`}
+            {`₹ ${product?.product?.price}`}
           </Typography.Title>
           <Typography.Title level={4}>
             Color:{" "}
             <Typography.Text style={{ color: "gray", fontSize: "18px" }}>
-              {product?.color}
+              {product?.product?.color}
             </Typography.Text>
           </Typography.Title>
           <Row style={{ marginTop: "3rem" }}>
@@ -174,7 +186,7 @@ const Productpage: React.FC = () => {
                     (res) => message.success("Order Placed Successfully!"),
                     () => {},
                     {
-                      payload: { product_id: product?.id },
+                      payload: { product_id: product?.product?.id },
                       accessToken: auth?.accessToken,
                     }
                   );
@@ -191,8 +203,34 @@ const Productpage: React.FC = () => {
             level={5}
             style={{ fontWeight: 500, color: "gray", marginTop: "0" }}
           >
-            {product?.description}
+            {product?.product?.description}
           </Typography.Title>
+        </Col>
+        <Col span={24}>
+          <Typography.Title level={2}>Similar Products</Typography.Title>
+          <Row
+            gutter={[24, 24]}
+            style={{
+              padding: xl ? "6rem" : md ? "3rem" : "4rem 2rem",
+              marginLeft: 0,
+              marginRight: 0,
+            }}
+          >
+            {product?.similar_products?.slice(0, 8)?.map((item, index) => {
+              return (
+                <Col span={6} key={index}>
+                  <ProductCard
+                    name={item?.name}
+                    image={item?.image}
+                    id={item?.id}
+                    price={item?.price}
+                    wishList={false}
+                    cart={false}
+                  />
+                </Col>
+              );
+            })}
+          </Row>
         </Col>
       </Row>
     </ConfigProvider>
